@@ -1,0 +1,278 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100vw;
+  min-height: 100vh;
+  /* No overflow-x: hidden, allows scaling */
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  font-family: 'Press Start 2P', Arial, sans-serif;
+  color: #fff;
+  box-sizing: border-box;
+  /* Only background, font, min-height, color, box-sizing. No flex, no align, no overflow. */
+  /* Prevent zooming on mobile */
+  touch-action: none;
+}
+
+/* Prevent text scaling on iOS */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Lock main app container to fixed desktop size */
+.tetris-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(10, 10, 26, 0.8);
+  backdrop-filter: blur(8px);
+  max-width: 560px;
+  min-width: 560px;
+  width: 560px;
+  border-radius: 16px;
+  padding: 8px 25px 5px 20px; /* Slightly more right padding, less left padding */
+  box-sizing: border-box;
+  margin: 0 auto;
+  /* Prevent shrinking on mobile */
+  flex-shrink: 0;
+}
+
+/* Scaling wrapper for mobile */
+.tetris-app-wrapper {
+  width: 100vw;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .tetris-app-wrapper {
+    transform: scale(calc(100vw / 450));
+    transform-origin: top left;
+    width: 100vw;
+    /* height removed for better scaling */
+  }
+  body {
+    padding: 0;
+    align-items: flex-start;
+  }
+}
+
+
+/* Prevent stacking or shrinking of side panels and controls */
+@media (max-width: 480px) {
+  .tetris-app {
+    min-width: 450px;
+    width: 450px;
+    max-width: 450px;
+  }
+  body {
+    padding: 0;
+    align-items: flex-start;
+  }
+}
+
+/* Optional: Always show horizontal scroll if viewport is too small */
+body {
+  overflow-x: auto;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start; /* Align to the start */
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 885px;
+  margin: 0 0 0 10px; /* Left margin only */
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 245px;
+  margin: 0 0 0 auto; /* Push to the right */
+  min-width: 0; /* Allows the panel to shrink if needed */
+  justify-content: flex-start;
+  height: auto;
+  padding: 0 10px 10px 0;
+  box-sizing: border-box;
+}
+
+.tetris-app::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(255, 255, 0, 0.3), rgba(255, 0, 0, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 
+    0 0 10px rgba(255, 255, 0, 0.3),
+    0 0 20px rgba(255, 0, 0, 0.2),
+    inset 0 0 15px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  height: fit-content;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.game-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  padding: 3px;
+  background: linear-gradient(
+    45deg, 
+    #ff0 0%,
+    #f90 25%,
+    #f30 50%,
+    #f00 75%,
+    #c00 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.8;
+  animation: borderPulse 4s ease-in-out infinite;
+}
+
+@keyframes borderPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.9; }
+}
+.side-panel {
+  width: 140px;
+  margin-left: 0;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+@keyframes colorPulse {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(10deg); }
+}
+
+.game-title {
+  color: #ff0;
+  font-family: 'Press Start 2P', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 0 #f00, 
+               2px 2px 0 rgba(0, 0, 0, 0.5);
+  margin: 10px 0 10px 0;
+  padding: 6px 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  z-index: 10;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 0, 0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  box-sizing: border-box;
+  animation: float 3s ease-in-out infinite, colorPulse 4s ease-in-out infinite;
+}
+
+.by-shadeed {
+  display: block;
+  font-size: 14px;
+  margin-top: 6px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #f00;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .right-panel {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 30px;
+    align-items: center;
+  }
+  
+  .side-panel {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .controls {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+  }
+  
+  .game-title {
+    font-size: 24px;
+    padding: 10px 20px;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    margin: 0 auto 20px;
+    width: fit-content;
+  }
+  
+  .by-shadeed {
+    font-size: 14px;
+  }
+  
+  .game-container {
+    margin-top: 0;
+  }
+}

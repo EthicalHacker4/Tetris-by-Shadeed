@@ -1,0 +1,193 @@
+/* Controls container */
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: rgba(10, 10, 26, 0.6);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 0, 0.2);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  min-width: 220px;
+  box-sizing: border-box;
+  height: fit-content;
+  margin-top: -15px; /* Moved up */
+}
+
+.controls::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  z-index: 1;
+}
+
+.controls:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 0, 0.4);
+}
+
+/* Controls title */
+.controls-title {
+  color: #ff0;
+  font-family: 'Press Start 2P', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 3px 3px 0 #f00;
+  margin: 0 0 15px 0;
+  line-height: 1.2;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Buttons container */
+.controls > div {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Base button styles */
+.controls-btn {
+  background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+  border: 2px solid rgba(255, 255, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3),
+              -2px -2px 4px rgba(255, 255, 255, 0.05),
+              inset 0 0 10px rgba(0, 0, 0, 0.3);
+  font-size: 22px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0;
+  text-shadow: 0 0 8px rgba(255, 255, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.controls-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 0, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.controls-btn:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+              -1px -1px 2px rgba(255, 255, 255, 0.05),
+              inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.controls-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 0, 0.6);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4),
+              -2px -2px 6px rgba(255, 255, 255, 0.1),
+              inset 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.controls-btn:hover::before {
+  opacity: 0.5;
+}
+
+/* Style the rotation button */
+.rotate-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.controls-btn.rotate {
+  background: linear-gradient(145deg, #ffcc00, #ff9900);
+  border-color: rgba(255, 255, 0, 0.8);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+  position: relative;
+  z-index: 1;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  margin: 0 auto;
+}
+
+.controls-btn.rotate::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+  opacity: 0.5;
+}
+
+.controls-btn.rotate:hover {
+  background: linear-gradient(145deg, #ffdd33, #ffaa33);
+  border-color: #ff0;
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+  transform: scale(1.05);
+}
+
+.controls-btn.rotate:active {
+  transform: scale(0.95);
+}
+
+/* Directional buttons */
+.controls-btn.left,
+.controls-btn.right,
+.controls-btn.down {
+  background: rgba(40, 40, 60, 0.8);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controls-btn.left:hover,
+.controls-btn.right:hover,
+.controls-btn.down:hover {
+  background: rgba(50, 50, 80, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.controls-btn.left:active,
+.controls-btn.right:active,
+.controls-btn.down:active {
+  background: rgba(30, 30, 50, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .controls {
+    flex-direction: row;
+    min-width: auto;
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+  }
+  
+  .controls > div:first-child {
+    margin-right: 15px;
+  }
+  
+  /* Adjust button sizes for mobile */
+  .controls-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+}

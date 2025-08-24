@@ -1,0 +1,176 @@
+.game-board {
+  width: 225px; /* 10 cells * 22.5px */
+  height: 450px; /* 20 cells * 22.5px */
+  background: repeating-linear-gradient(90deg, #333 0 2px, #111 2px 34px);
+  border: 8px solid #666;
+  box-shadow: 0 0 24px #000 inset;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* 10 columns */
+  grid-template-rows: repeat(20, 1fr); /* 20 rows */
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+
+.game-board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(rgba(255, 255, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.cell {
+  width: 21px;
+  height: 21px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  position: relative;
+  background: rgba(20, 20, 30, 0.9);
+  transition: all 0.1s ease;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
+  aspect-ratio: 1/1;
+  will-change: opacity; /* Only optimize what's needed */
+  transform: translate3d(0,0,0); /* Standard property */
+  -webkit-transform: translate3d(0,0,0); /* WebKit/Blink browsers */
+}
+
+.cell::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  pointer-events: none;
+}
+
+.filled {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 0 10px currentColor, inset 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: cellPlaced 0.3s ease-out;
+}
+
+@keyframes cellPlaced {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Individual piece colors with gradients */
+.cell.I { background: linear-gradient(145deg, #00f0f0, #00a0a0) !important; }
+.cell.J { background: linear-gradient(145deg, #0000f0, #0000a0) !important; }
+.cell.L { background: linear-gradient(145deg, #f0a000, #a07000) !important; }
+.cell.O { background: linear-gradient(145deg, #f0f000, #a0a000) !important; }
+.cell.S { background: linear-gradient(145deg, #00f000, #00a000) !important; }
+.cell.T { background: linear-gradient(145deg, #a000f0, #7000a0) !important; }
+.cell.Z { background: linear-gradient(145deg, #f00000, #a00000) !important; }
+
+/* Game over overlay styles */
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.5s ease-in-out;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.game-over-text {
+  color: #ff4444;
+  font-size: 3rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+  margin-bottom: 1.5rem;
+  animation: pulse 1.5s infinite;
+  width: 100%;
+  line-height: 1.2;
+}
+
+.game-over-instruction {
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.restart-button {
+  background: linear-gradient(180deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 0 #2E7D32, 0 6px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.restart-button:hover {
+  background: linear-gradient(180deg, #45a049 0%, #3d8b40 100%);
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #2E7D32, 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.restart-button:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #2E7D32, 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.restart-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Dim the board when game is over */
+.game-over-board .cell {
+  opacity: 0.5;
+  filter: grayscale(50%) brightness(0.7);
+  transition: all 0.5s ease;
+}
+
+.game-over-board .filled {
+  opacity: 0.8;
+  animation: gameOverPulse 2s infinite;
+}
+
+@keyframes gameOverPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.9; }
+}

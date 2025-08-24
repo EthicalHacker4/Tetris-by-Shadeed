@@ -1,0 +1,187 @@
+/* Game Controls Container */
+.game-controls {
+  display: flex;
+  gap: 12px;
+  margin: 0 0 10px 0;
+  padding: 0 40px 0 0; /* Further reduced right padding */
+  z-index: 10;
+  justify-content: flex-end; /* Align to the right */
+  box-sizing: border-box;
+  /* No fixed width, no overflow hidden */
+}
+
+/* Base button styles */
+.control-button {
+  background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+  border: 2px solid rgba(255, 255, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3),
+              -2px -2px 4px rgba(255, 255, 255, 0.05),
+              inset 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0;
+  text-shadow: 0 0 8px rgba(255, 255, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  font-size: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.control-button:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 0, 0.6);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4),
+              -2px -2px 6px rgba(255, 255, 255, 0.1),
+              inset 0 0 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.control-button:active {
+  transform: translateY(1px);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.control-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 0, 0.1), transparent);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.control-button:hover::before {
+  opacity: 0.7;
+}
+
+/* Pause/Resume button specific styles */
+.control-button.pause-button {
+  background: linear-gradient(145deg, #ffcc00, #ff9900);
+  border-color: rgba(255, 255, 0, 0.8);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+}
+
+.control-button.pause-button:hover {
+  background: linear-gradient(145deg, #ffdd33, #ffaa33);
+  border-color: #ff0;
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+}
+
+/* Mute/Unmute button specific styles */
+.control-button.mute-button {
+  background: linear-gradient(145deg, #4a4a6a, #2a2a4a);
+  border-color: rgba(100, 100, 255, 0.3);
+  color: #88f;
+  text-shadow: 0 0 8px rgba(100, 100, 255, 0.5);
+}
+
+.control-button.mute-button:hover {
+  background: linear-gradient(145deg, #5a5a7a, #3a3a5a);
+  border-color: #88f;
+  color: #aaf;
+  box-shadow: 0 0 15px rgba(100, 100, 255, 0.6);
+}
+
+/* Paused overlay */
+.paused-overlay {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  backdrop-filter: blur(3px);
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.paused-text {
+  color: #ff0;
+  font-size: 2rem; /* Reduced from 2rem */
+  font-weight: bold;
+  text-shadow: 0 0 10px #ff0, 0 0 20px #f80;
+  margin: 0 0 20px 0;
+  padding: 10px 20px;
+  white-space: nowrap;
+  animation: pulse 1.5s infinite;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 200, 0, 0.3);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.resume-button {
+  background: linear-gradient(145deg, #00aa00, #008800);
+  border: 2px solid #0f0;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 20px;
+  font-family: 'Press Start 2P', Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  box-shadow: 0 4px 0 #006600, 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.resume-button:hover {
+  background: linear-gradient(145deg, #00cc00, #009900);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #007700, 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.resume-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 #007700, 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .game-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+    justify-content: space-between;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .control-button {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+  
+  .paused-text {
+    font-size: 1.9rem;
+  }
+  
+  .resume-button {
+    font-size: 10px;
+    padding: 10px 15px;
+  }
+}

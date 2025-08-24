@@ -1,0 +1,6 @@
+{
+  "appId": "com.shadeed.tetris",
+  "appName": "Tetris by Shadeed",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
